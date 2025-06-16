@@ -185,7 +185,7 @@ For example, change or add the line:
 valid users = admin
 ```
 
-You will then also need to update corresponding commands in `/opt/argushoney-hive/opencanary_docker/`, such as:
+You will then also need to update corresponding commands in `/opt/honey-hive/opencanary_docker/`, such as:
 
 - `useradd -m admin` (replace admin)
 - `smbpasswd -s -a admin` (replace admin)
