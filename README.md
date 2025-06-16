@@ -1,4 +1,4 @@
-# Argus
+# Honey-Hive
 
 ## Table of Contents
 - **[Presentation](#presentation)**
