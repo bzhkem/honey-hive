@@ -22,7 +22,7 @@
 
 ## Presentation
 
-**Argus** is developed by **Biznet.io** and is based on OpenCanary, which is a honeypot solution.
+**Honey-Hive** is developed by **Bzhkem** and is based on OpenCanary, which is a honeypot solution.
 
 ### OpenCanary
 
@@ -32,7 +32,7 @@ If you want to learn more about ([OpenCanary](https://github.com/thinkst/opencan
 
 ### Features
 
-**Argus** is primarily focused on **Samba** integration for honeypot and deception purposes.  
+**Honey-Hive** is primarily focused on **Samba** integration for honeypot and deception purposes.  
 It features integrated MAC spoofing, a static IP system, and Samba file sharing linked to a logging system.
 it uses Scapy to catch any port scan atempt
 
