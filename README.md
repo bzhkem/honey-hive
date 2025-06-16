@@ -73,7 +73,7 @@ To configure accounts and enable SSH access:
 
 To create an account, run (make sure to customize the account name):
 
-(you can skip the first step you did [Install Pi4](#install-pi4))
+(you can skip the first step if you did [Install Pi4](#install-pi4))
 
 ```sh
 useradd <username>
@@ -107,7 +107,7 @@ PermitRootLogin no
 and 
 
 ```
-AllowsUsers syswhoz
+AllowsUsers user
 ```
 ## Installation
 
@@ -133,40 +133,20 @@ sudo apt update
 sudo apt install git -y
 ```
 
-> [!WARNING]
-> Configuration is not finished yet. You will still need to obtain repository access keys.
-
 ### OpenCanary Installation
 
 Due to compatibility issues, it is strongly recommended to clone into `/opt` for the default setup.
 
 #### Git Clone
 
-Before running the command below, make sure you have access to the repository or are authenticated.
 
-generate a ssh key 
-
-```
-ssh-keygen -t ed25519 -C "votre.email@example.com"
-```
-
-now you can see the key you just generated 
-
-```
-cat .ssh/id_ed25519.pub
-```
-
-now add this key in your account settings in github
-```
-ssh -T git@github.com
-```
 i will copy the git broject at the curent emplacement where you are located
 ```sh
-git clone git@github.com:biznet-io/argus.git 
+git clone https://github.com/bzhkem/honey-hive.git
 ```
 ```
-sudo mkdir /opt/argus
-sudo cp -r /home/syswhoz/argus /opt
+sudo mkdir /opt/honey-hive
+sudo cp -r /home/syswhoz/honey-hive /opt
 ```
 
 #### Executable
@@ -174,7 +154,7 @@ sudo cp -r /home/syswhoz/argus /opt
 The script is not yet executable at this stage. Run the following:
 
 ```sh
-sudo chmod +x /opt/argus/install_startup.sh
+sudo chmod +x /opt/honey-hive/install_startup.sh
 ```
 
 ## Customizations
@@ -183,8 +163,8 @@ If something becomes obsolete or requires a change/fix, here you can find custom
 
 ### Samba Share
 
-The shared folder is located at `/opt/argus/opencanary_docker/share`.  
-If you want to change the shared file path, edit `/opt/argus/install_startup.sh`.
+The shared folder is located at `/opt/honey-hive/opencanary_docker/share`.  
+If you want to change the shared file path, edit `/opt/honey-hive/install_startup.sh`.
 
 At line 65, you'll find:
 
@@ -197,7 +177,7 @@ Replace `$DOCKER_CONF_DIR/share` with your desired file path (make sure the path
 ### Account Configuration
 
 If you think the default password or username is not realistic, or is not suitable for your setup,  
-edit `/opt/argus/opencanary_docker/smb.conf`.
+edit `/opt/honey-hive/opencanary_docker/smb.conf`.
 
 For example, change or add the line:
 
@@ -205,7 +185,7 @@ For example, change or add the line:
 valid users = admin
 ```
 
-You will then also need to update corresponding commands in `/opt/argus/opencanary_docker/`, such as:
+You will then also need to update corresponding commands in `/opt/argushoney-hive/opencanary_docker/`, such as:
 
 - `useradd -m admin` (replace admin)
 - `smbpasswd -s -a admin` (replace admin)
@@ -216,7 +196,7 @@ For multiple users, follow the same logic.
 
 ### MAC Spoofing
 
-To change your Raspberry Pi's MAC address, open `/opt/argus/install_startup.sh` and edit:
+To change your Raspberry Pi's MAC address, open `/opt/honey-hive/install_startup.sh` and edit:
 
 ```sh
 MACADDR="00:11:32:12:34:56"
@@ -233,7 +213,7 @@ MACADDR="00:11:32:12:34:56"
 STATIC_IP="10.12.4.170/24"
 ROUTER="10.12.4.254"
 LOGS_LOCATION="/var/log/docker/opencanary.log"
-DOCKER_CONF_DIR="/opt/argus/opencanary_docker"
+DOCKER_CONF_DIR="/opt/honey-hive/opencanary_docker"
 CONTAINER_NAME="opencanary"
 IMAGE_NAME="opencanary"
 ```
@@ -242,10 +222,10 @@ all these values can be changed
 
 ## Useful Commands
 
-To start Argus, simply run:
+To start Honey-Hive, simply run:
 
 ```sh
-sudo /opt/argus/install_start.sh
+sudo /opt/honey-hive/install_start.sh
 ```
 
 
