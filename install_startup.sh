@@ -7,7 +7,7 @@ MACADDR="00:11:32:12:34:56"
 STATIC_IP="10.12.4.170/24"
 ROUTER="10.12.4.254"
 LOGS_LOCATION="/var/log/docker/opencanary.log"
-DOCKER_CONF_DIR="/opt/argus/opencanary_docker"
+DOCKER_CONF_DIR="/opt/honey-hive/opencanary_docker"
 CONTAINER_NAME="opencanary"
 IMAGE_NAME="opencanary"
 
