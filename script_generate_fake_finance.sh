@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Dossier racine (à adapter à ton partage Samba)
-DRIVE_ROOT="/opt/argus/opencanary_docker/share"
+DRIVE_ROOT="/opt/honey-hive/opencanary_docker/share"
 
 mkdir -p "$DRIVE_ROOT"
 
