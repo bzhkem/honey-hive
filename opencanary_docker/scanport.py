@@ -55,7 +55,7 @@ def detect_scan_flags(pkt):
     }
 
     with open(LOG_PATH, 'a') as f:
-        f.write("opencanary: " + json.dumps(event) + "\n")
+        f.write(json.dumps(event) + "\n")
     print(f"Logged: {scan_type} scan from {src} to port {dport}")
 
 while True:
@@ -70,6 +70,6 @@ while True:
             "logdata": {"msg": f"scanport.py crashed: {repr(e)}"}
         }
         with open(LOG_PATH, 'a') as f:
-            f.write("opencanary: " + json.dumps(error_event) + "\n")
+            f.write(json.dumps(error_event) + "\n")
         print(f"scanport.py crashed: {repr(e)}, retrying in 60s")
         time.sleep(60)
