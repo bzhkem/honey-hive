@@ -22,57 +22,43 @@ static ip_address=$STATIC_IP
 static routers=$ROUTER
 static domain_name_servers=8.8.8.8 1.1.1.1
 EOF
-echo "checking $DOCKER_CONF_DIR/share ....."
 sleep 2
 
 [ -d "$DOCKER_CONF_DIR/share" ] || sudo mkdir -p "$DOCKER_CONF_DIR/share"
 sudo chmod 777 "$DOCKER_CONF_DIR/share"
-echo "successful"
-
-echo "checking $DOCKER_CONF_DIR/opencanary.conf ....."
-[ -f "$DOCKER_CONF_DIR/opencanary.conf" ] || (echo "Fichier $DOCKER_CONF_DIR/opencanary.conf manquant !"; exit 1)
-echo "successful"
-
-echo "checking $DOCKER_CONF_DIR/smb.conf ....."
-[ -f "$DOCKER_CONF_DIR/smb.conf" ] || (echo "Fichier $DOCKER_CONF_DIR/smb.conf manquant !"; exit 1)
-echo "successful $DOCKER_CONF_DIR/smb.conf"
-
-echo "checking $LOGS_LOCATION ..."
+[ -f "$DOCKER_CONF_DIR/opencanary.conf" ] || (echo -e "\033[31mFichier $DOCKER_CONF_DIR/opencanary.conf manquant\033[0m"; exit 1)
+[ -f "$DOCKER_CONF_DIR/smb.conf" ] || (echo -e "\033[31mFichier $DOCKER_CONF_DIR/smb.conf manquant\033[0m"; exit 1)
 sudo mkdir -p "$(dirname "$LOGS_LOCATION")"
 if [ -d "$LOGS_LOCATION" ]; then
-  echo "$LOGS_LOCATION exists and is a directory. Removing it and creating a file instead."
+  echo -e "\033[31m $LOGS_LOCATION exists and is a directory. Removing it and creating a file instead\033[0m"
   sudo rm -rf "$LOGS_LOCATION"
 fi
-
 [ -f "$LOGS_LOCATION" ] || sudo touch "$LOGS_LOCATION"
 sudo chmod 666 "$LOGS_LOCATION"
-echo "successful"
-
-echo "checking $DOCKER_CONF_DIR/syslog ....."
 [ -f "$DOCKER_CONF_DIR/syslog" ] || sudo touch "$DOCKER_CONF_DIR/syslog"
-echo "successful $DOCKER_CONF_DIR/syslog"
 sudo chmod 666 "$DOCKER_CONF_DIR/syslog"
-
-echo "Installation Opencanary..."
 sudo docker rm -f "$CONTAINER_NAME" 2>/dev/null
 echo "sudo docker build -t $IMAGE_NAME $DOCKER_CONF_DIR"
 sudo docker build -t $IMAGE_NAME $DOCKER_CONF_DIR/
 sudo docker run -d \
  --network host \
  --restart unless-stopped \
+ --cap-add=NET_ADMIN \
  -v $LOGS_LOCATION:/app/opencanary.log \
  -v $DOCKER_CONF_DIR/share:/samba/share \
  -v $DOCKER_CONF_DIR/opencanary.conf:/root/.opencanary.conf \
  -v $DOCKER_CONF_DIR/smb.conf:/etc/samba/smb.conf \
  --name $CONTAINER_NAME \
  $IMAGE_NAME
+echo
 echo "---------------------------------------------"
-echo "file path for Opencanary logs set on $LOGS_LOCATION"
+echo -e "\033[34mfile path for Opencanary logs set on $LOGS_LOCATION\033[0m"
 echo "---------------------------------------------"
 echo
 echo "Le conteneur Docker Opencanary est lancé et s'autodémarrera dorénavant."
 echo "Les modifications IP/MAC prennent effet tout de suite."
 
+sudo truncate -s 0 /var/log/docker/scanport.log
 LOGROTATE_CONFIG_FILE="/etc/logrotate.d/opencanary"
 if [ ! -f "$LOGROTATE_CONFIG_FILE" ]; then
     echo "Setting up log rotation for $LOGS_LOCATION with logrotate..."
@@ -93,9 +79,3 @@ EOF
 else
     echo "Log rotation for $LOGS_LOCATION already configured."
 fi
-
-sleep 4
-sudo docker cp $DOCKER_CONF_DIR/scanport.py $CONTAINER_NAME:/scanport.py
-sudo docker exec $CONTAINER_NAME pip install scapy
-sudo docker exec -d $CONTAINER_NAME python /scanport.py
-echo "Le sniffer scanport.py tourne dans $CONTAINER_NAME"
