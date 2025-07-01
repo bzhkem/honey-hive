@@ -120,7 +120,7 @@ For multiple users, follow the same logic.
 
 ### MAC Spoofing
 
-To change your Raspberry Pi's MAC address, open `/opt/honey-hive/install_startup.sh` and edit:
+To change your MAC address, open `/opt/honey-hive/install_startup.sh` and edit:
 
 ```sh
 MACADDR="00:11:32:XX:XX:XX"
