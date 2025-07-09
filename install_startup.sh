@@ -1,18 +1,24 @@
 #!/bin/bash
 NETIF="eth0"
-MACADDR="00:11:32:12:34:56"
-STATIC_IP="10.12.4.170/24"
-ROUTER="10.12.4.254"
+NETIFW="wlan0"
+MACADDRW="00:11:32:12:34:59"
+MACADDR="00:11:32:12:34:XX"
+STATIC_IP="XXX.XXX.XXX.XXX/24"
+ROUTER="XXX.XXX.XXX.XXX"
 LOGS_LOCATION="/var/log/docker/opencanary.log"
 DOCKER_CONF_DIR="/opt/honey-hive/opencanary_docker"
 CONTAINER_NAME="opencanary"
 IMAGE_NAME="opencanary"
 
 echo "Changement MAC sur $NETIF..."
-echo "Si tu es en SSH, ta connexion risque d'être coupée ! Reconnecte-toi sur $STATIC_IP."
 sudo ip link set dev $NETIF down
 sudo ip link set dev $NETIF address $MACADDR
 sudo ip link set dev $NETIF up
+
+echo "Changement MAC sur $NETIFW..."
+sudo ip link set dev $NETIFW down
+sudo ip link set dev $NETIFW address $MACADDRW
+sudo ip link set dev $NETIFW up
 
 echo "Configuration IP statique et gateway dans /etc/dhcpcd.conf"
 sudo sed -i "/^interface $NETIF/,+10d" /etc/dhcpcd.conf
@@ -20,6 +26,9 @@ cat <<EOF | sudo tee -a /etc/dhcpcd.conf
 interface $NETIF
 static ip_address=$STATIC_IP
 static routers=$ROUTER
+static domain_name_servers=8.8.8.8 1.1.1.1
+
+interface $NETIFW
 static domain_name_servers=8.8.8.8 1.1.1.1
 EOF
 sleep 2
