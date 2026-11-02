@@ -11,7 +11,7 @@ LOG_CODES = {
     'XMAS': 5004,
     'FIN': 5005
 }
-LOG_PATH = '/app/opencanary.log'  # Chemin du log (docker -v ...)
+LOG_PATH = '/app/opencanary.log'
 
 def detect_scan_flags(pkt):
     if not pkt.haslayer(TCP):
@@ -63,7 +63,6 @@ while True:
         print("== scanport.py démarré (sniff TCP flags) ==")
         sniff(filter="tcp", prn=detect_scan_flags, store=0)
     except Exception as e:
-        # Log dans OpenCanary en cas de crash
         error_event = {
             "logtype": "SCANPORT_CRASH",
             "local_time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f"),

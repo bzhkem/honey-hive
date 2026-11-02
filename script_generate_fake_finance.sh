@@ -16,7 +16,6 @@ faker_fichier() {
   local type=$4
   local i count ext
 
-  # Nombre aléatoire de fichiers par sous-dossier (2 à 7 pour l'exemple)
   count=$(shuf -i 2-7 -n 1)
   for ((i=1;i<=count;i++)); do
     case $type in
@@ -68,7 +67,6 @@ for annee in $YEARS; do
   done
 done
 
-# Ajoute quelques fichiers globaux au top-level pour la crédibilité
 touch "$DRIVE_ROOT/rib_siege_principal.pdf"
 touch "$DRIVE_ROOT/Listing_Comptes_Clients_2025.xlsx"
 touch "$DRIVE_ROOT/rapport_audit_interne_2024.pdf"
